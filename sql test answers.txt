@@ -1,0 +1,116 @@
+1. How many organisations in total?
+Query -
+
+select count(org.id) from organisations as org;
+
+Result - 100
+Query Runtime - 69 ms
+
+2.How many organisations do not have offer_requests?
+
+Query- 
+
+select count(org.id) from organisations as org 
+where org.id not in (select ofrsreq.organisation_id 
+from offer_requests as ofrsreq);
+
+Result- 0
+Query Runtime - 82 ms
+
+3. How many organisations have offer_requests?
+ Query : 
+
+select count(org.id) from organisations as org 
+where org.id in (select ofrsreq.organisation_id 
+from offer_requests as ofrsreq);
+ 
+Result: 100
+Query Runtime: 79 ms
+
+4. How many organisations have no offers?
+Query: 
+
+select count(org.id) from organisations as org 
+where org.id not in (select ofrs.organisation_id 
+from offers as ofrs);
+
+Result: 0
+Query Runtime: 75 ms
+
+5. Which organisation has maximum offers and how many offers?
+
+Query: 
+
+select org.org_name ,count(org.id) as no_of_offers from organisations as org 
+inner join offers as ofrs on org.id = ofrs.organisation_id 
+group by org.id ,org_name order by count(org.id) desc limit 1 ;
+
+Result: org_name: moaning_turquoise	
+        no of offers: 10915
+
+Query Runtime: 198 ms
+
+6. Which organisation has minimum offers and how many offers?
+
+Query :
+
+select org.org_name ,count(org.id) as no_of_offers from organisations as org 
+inner join offers as ofrs on org.id = ofrs.organisation_id 
+group by org.id ,org_name order by count(org.id) asc  limit 1 ;
+
+Result: org_name: native_lime	
+        no of offers : 420
+
+
+Query Runtime :191 ms
+
+7. Which organisation has maximum orders and how many orders?
+
+Query : select org.org_name ,count(org.id) as no_of_orders from organisations as org 
+left join orders as ords on org.id = ords.organisation_id 
+group by org.id ,org_name order by count(org.id) desc limit 1;
+
+Result: org_name: dual sapphire 
+        no_of_orders: 32
+
+Query Runtime : 69ms
+
+8. Which organisation has minimum orders and how many orders?
+
+Query : select org.org_name ,count(org.id) as no_of_orders from organisations as org 
+left join orders as ords on org.id = ords.organisation_id 
+group by org.id ,org_name order by count(org.id) asc limit 1;
+
+Result: org_name: lucky_white
+    	no_of_orders : 1
+
+Query Runtime : 84 ms
+
+9. Which organisation has the maximum total amount of offers and what is the amount?
+Query:
+
+select org_name ,count(org.id) as no_of_offers,sum(ofr.total_amount) as total_amount  from organisations 
+as org inner join offers  as ofr on org.id = ofr.organisation_id  
+group by org.org_name order by count(org.id) desc limit 1 ;
+
+Result : org_name: moaning_turquoise
+         total_amount : 324947704
+
+Query Run time : 159 ms
+
+10. Which organisation has the maximum total amount of orders and what is the amount?
+Query: 
+
+select org_name ,count(org.id) as no_of_orders,sum(ordr.total_amount) as total_amount  
+from organisations as org inner join orders  as ordr on org.id = ordr.organisation_id  
+group by org.org_name order by count(org.id) desc limit 1 ;
+
+Result: org_name: dual_sapphire
+        total_amount: 1123713
+
+Query Runtime : 73 ms
+
+
+
+
+
